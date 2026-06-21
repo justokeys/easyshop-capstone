@@ -13,10 +13,10 @@ import java.util.List;
 // add the annotations to make this a REST controller
 @RestController
 // add the annotation to make this controller the endpoint for the following url
-@RequestMapping("categories")
+@RequestMapping("/categories")
     // http://localhost:8080/categories
 // add annotation to allow cross site origin requests
-@CrossOrigin
+@CrossOrigin(origins = "*")
 public class CategoriesController
 {
     private final CategoryService categoryService;
@@ -33,10 +33,11 @@ public class CategoriesController
     }
     @GetMapping
     // add the appropriate annotation for a get action
-    public List<Category> getAll()
+    public ResponseEntity<List<Category>> getAllCategories()
     {
+        List<Category> categoryList = categoryService.getAllCategories();
         // find and return all categories
-        return categoryService.getAllCategories();
+        return ResponseEntity.ok(categoryList);
     }
 
     // add the appropriate annotation for a get action
