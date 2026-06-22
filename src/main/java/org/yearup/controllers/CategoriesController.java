@@ -2,6 +2,7 @@ package org.yearup.controllers;
 
 import jakarta.persistence.Access;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -63,22 +64,30 @@ public class CategoriesController
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
     @PostMapping("/add/category/{category}")
-    @PreAuthorize("hasRole('ROLE_USER')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Category> addCategory(@RequestBody Category category)
     {
         // insert the category and return it with status 201 Created
         Category created = categoryService.create(category);
 
-        return ResponseEntity.status(202).body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
+    @PutMapping
     // add annotation to ensure that only an ADMIN can call this function
-    public Category updateCategory(@PathVariable int id, @RequestBody Category category)
-    {
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<Category> updateCategory(@PathVariable int categoryId, @RequestBody Category category) {
+
         // update the category by id and return the updated category (200 OK)
-        return null;
+
+        if (categoryService.getById(categoryId).isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        Category updated = categoryService.updateCategory(categoryId,category);
+        return ResponseEntity.status(HttpStatus.OK).body(updated);
     }
+
 
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
@@ -86,6 +95,7 @@ public class CategoriesController
     public ResponseEntity<Void> deleteCategory(@PathVariable int id)
     {
         // delete the category by id and return status 204 No Content
-        return null;
+
+        return R;
     }
 }
