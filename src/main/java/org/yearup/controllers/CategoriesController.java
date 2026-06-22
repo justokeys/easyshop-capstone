@@ -9,6 +9,7 @@ import org.yearup.service.CategoryService;
 import org.yearup.service.ProductService;
 
 import java.util.List;
+import java.util.Optional;
 
 // add the annotations to make this a REST controller
 @RestController
@@ -41,10 +42,12 @@ public class CategoriesController
     }
 
     // add the appropriate annotation for a get action
-    public Category getById(@PathVariable int id)
+    @GetMapping("/search/id/{categoryId}")
+    public ResponseEntity<Category> getById(@PathVariable int categoryId)
     {
+
         // get the category by id
-        return null;
+        return categoryService.getById(categoryId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // the url to return all products in category 1 would look like this
