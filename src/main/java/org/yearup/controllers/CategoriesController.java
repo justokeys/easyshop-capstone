@@ -1,7 +1,9 @@
 package org.yearup.controllers;
 
+import jakarta.persistence.Access;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.models.Category;
 import org.yearup.models.Product;
@@ -45,7 +47,6 @@ public class CategoriesController
     @GetMapping("/search/id/{categoryId}")
     public ResponseEntity<Category> getById(@PathVariable int categoryId)
     {
-
         // get the category by id
         return categoryService.getById(categoryId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
@@ -61,10 +62,14 @@ public class CategoriesController
 
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
+    @PostMapping("/add/category/{category}")
+    @PreAuthorize("hasRole('ROLE_USER')")
     public ResponseEntity<Category> addCategory(@RequestBody Category category)
     {
         // insert the category and return it with status 201 Created
-        return null;
+        Category created = categoryService.create(category);
+
+        return ResponseEntity.status(202).body(created);
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
