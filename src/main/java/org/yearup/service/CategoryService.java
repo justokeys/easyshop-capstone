@@ -47,5 +47,7 @@ public class CategoryService
     public void delete(int categoryId)
     {
         // delete category
+        Category deleted = categoryRepository.findById(categoryId).orElseThrow();
+        categoryRepository.delete(deleted);
     }
 }

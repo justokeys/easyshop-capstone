@@ -92,10 +92,14 @@ public class CategoriesController
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
-    public ResponseEntity<Void> deleteCategory(@PathVariable int id)
+    public ResponseEntity<Void> deleteCategory(@PathVariable int categoryId)
     {
-        // delete the category by id and return status 204 No Content
+        if (categoryService.getById(categoryId) == null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        // delete the category by id and return status 204 No Content;
+        categoryService.delete(categoryId);
 
-        return R;
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
