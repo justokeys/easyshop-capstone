@@ -37,14 +37,14 @@ public class ProductsController
 
     @GetMapping("{id}")
     @PreAuthorize("permitAll()")
-    public Product getById(@PathVariable int id)
+    public ResponseEntity<Product> getById(@PathVariable int id)
     {
         Product product = productService.getById(id);
 
         if (product == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return product;
+        return ResponseEntity.ok().body(product);
     }
 
     @PostMapping()
@@ -55,14 +55,14 @@ public class ProductsController
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public Product updateProduct(@PathVariable int id, @RequestBody Product product)
-    {
+    public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody Product product) {
+        Product update = productService.update(id, product);
         if (productService.getById(id) == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 
-        return productService.update(id, product);
+        return ResponseEntity.status(HttpStatus.CREATED).body(update);
     }
 
     @DeleteMapping("{id}")
