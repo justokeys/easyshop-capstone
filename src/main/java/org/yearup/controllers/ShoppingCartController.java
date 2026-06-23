@@ -1,5 +1,6 @@
 package org.yearup.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.User;
 import org.yearup.service.ShoppingCartService;
@@ -12,9 +13,10 @@ import java.security.Principal;
 public class ShoppingCartController
 {
     // a shopping cart controller depends on the service layer
+    @Autowired
     private ShoppingCartService shoppingCartService;
+    @Autowired
     private UserService userService;
-
 
 
     // each method in this controller requires a Principal object as a parameter
