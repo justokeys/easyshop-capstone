@@ -6,7 +6,7 @@ public class ShoppingCartItem
 {
     private Product product = null;
     private int quantity = 1;
-    private double discountPercent = 0.15;
+    private double discountPercent = 0.00;
 
     public Product getProduct()
     {

@@ -41,7 +41,6 @@ public class ShoppingCartService
             item.setQuantity(cartItem.getQuantity());
 
             cart.add(item);
-
         }
 
         return cart ;
