@@ -1,10 +1,7 @@
 package org.yearup.service;
 
 import org.springframework.stereotype.Service;
-import org.yearup.models.CartItem;
-import org.yearup.models.Product;
-import org.yearup.models.ShoppingCart;
-import org.yearup.models.ShoppingCartItem;
+import org.yearup.models.*;
 import org.yearup.repository.ShoppingCartRepository;
 
 import java.util.List;
@@ -43,17 +40,37 @@ public class ShoppingCartService
             cart.add(item);
         }
 
-        userCartItems.forEach(cartItem -> {});
         return cart ;
     }
 
     // add additional methods here
 
-  public CartItem getByByUserIdAndProductId(int userId,int productId){
+    public ShoppingCart addProductByUserIdAndProductId(int userId,int productId){
+        CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
 
-        return shoppingCartRepository.findByUserIdAndProductId(userId,productId);
+       if (cartItem == null) {
+
+           cartItem = new CartItem();
+           cartItem.setCartItemId(0);
+           cartItem.setProductId(productId);
+           cartItem.setUserId(userId);
+           shoppingCartRepository.save(cartItem);
+       }else{
+           cartItem.setQuantity(+1);
+           cartItem.setProductId(productId);
+           cartItem.setUserId(userId);
+
+       }
+
+        return getByUserId(userId);
+
    }
 
+
+    public CartItem getByByUserIdAndProductId(int userId,int productId){
+
+        return shoppingCartRepository.findByUserIdAndProductId(userId,productId);
+    }
    public void deleteByUserId(int userId){
         shoppingCartRepository.deleteByUserId(userId);
    }
