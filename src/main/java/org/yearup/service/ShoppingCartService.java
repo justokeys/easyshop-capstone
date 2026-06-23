@@ -36,7 +36,6 @@ public class ShoppingCartService
             ShoppingCartItem item = new ShoppingCartItem();
             item.setProduct(products);
             item.setQuantity(cartItem.getQuantity());
-
             cart.add(item);
         }
 
@@ -48,29 +47,43 @@ public class ShoppingCartService
     public ShoppingCart addProductByUserIdAndProductId(int userId,int productId){
         CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
 
+
+
        if (cartItem == null) {
 
-           cartItem = new CartItem();
-           cartItem.setCartItemId(0);
-           cartItem.setProductId(productId);
-           cartItem.setUserId(userId);
-           shoppingCartRepository.save(cartItem);
+           CartItem cartItem2 = new CartItem();
+           cartItem2.setProductId(productId);
+           cartItem2.setUserId(userId);
+           shoppingCartRepository.save(cartItem2);
        }else{
-           cartItem.setQuantity(+1);
-           cartItem.setProductId(productId);
-           cartItem.setUserId(userId);
-
+           cartItem.setQuantity(cartItem.getQuantity() + 1);
+           shoppingCartRepository.save(cartItem);
        }
 
         return getByUserId(userId);
 
    }
 
+   public ShoppingCart updateProductByIdAndUserId(int userId,int productId,int quantity ){
+       CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
+           cartItem.setQuantity(quantity);
+           shoppingCartRepository.save(cartItem);
+
+           return getByUserId(userId);
+   }
+
+
 
     public CartItem getByByUserIdAndProductId(int userId,int productId){
 
         return shoppingCartRepository.findByUserIdAndProductId(userId,productId);
     }
+
+
+
+
+
+
    public void deleteByUserId(int userId){
         shoppingCartRepository.deleteByUserId(userId);
    }

@@ -1,11 +1,13 @@
 package org.yearup.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.models.CartItem;
 import org.yearup.models.ShoppingCart;
+import org.yearup.models.ShoppingCartItem;
 import org.yearup.models.User;
 import org.yearup.service.ShoppingCartService;
 import org.yearup.service.UserService;
@@ -62,14 +64,36 @@ public class ShoppingCartController
     // https://localhost:8080/cart/products/15  (15 is the productId to be added)
     // return the updated cart with status 201 Created
 
-    @PostMapping("addProduct/{productId}")
+    @PostMapping("/products/{productId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ShoppingCart>
+    public ResponseEntity<ShoppingCart>  addProductById(Principal principal,@PathVariable int productId){
+        // get the currently logged in username
+                String userName = principal.getName();
+                // find database user by username
+                User user = userService.getByUserName(userName);
+                int userId = user.getId();
+
+                return ResponseEntity.status(HttpStatus.CREATED)
+                        .body(shoppingCartService.addProductByUserIdAndProductId(userId,productId));
+    }
 
 
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15  (15 is the productId to be updated)
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated; return the cart (200 OK)
+    @PutMapping("/products/{productId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ShoppingCart> updateProductByProductId(Principal principal , @RequestBody ShoppingCartItem item, @PathVariable int productId){
+        String userName = principal.getName();
+        // find database user by username
+        User user = userService.getByUserName(userName);
+        int userId = user.getId();
+
+        int quantityUpdate = item.getQuantity();
+
+        return ResponseEntity.ok().body(shoppingCartService.updateProductByIdAndUserId(userId,productId, quantityUpdate));
+
+    }
 
 
     // add a DELETE method to clear all products from the current users cart
