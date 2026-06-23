@@ -1,7 +1,11 @@
 package org.yearup.models;
 
+import java.text.NumberFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
+
+import static java.lang.Math.round;
 
 public class ShoppingCart
 {
@@ -34,10 +38,13 @@ public class ShoppingCart
 
     public double getTotal()
     {
+
         double total = items.values()
                             .stream()
-                            .mapToDouble(i -> i.getLineTotal())
+                            .mapToDouble(ShoppingCartItem::getLineTotal)
                             .sum();
+
+
 
         return total;
     }

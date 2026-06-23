@@ -31,7 +31,7 @@ public class ShoppingCartService
 
         List<CartItem> userCartItems = shoppingCartRepository.findByUserId(userId);
 
-        // find each item and add them to row in cart
+        // find each product and add them to row in cart
         // find the quantity of each item and add them to row in cart
 
         for (CartItem cartItem : userCartItems){
@@ -43,8 +43,19 @@ public class ShoppingCartService
             cart.add(item);
         }
 
+        userCartItems.forEach(cartItem -> {});
         return cart ;
     }
 
     // add additional methods here
+
+  public CartItem getByByUserIdAndProductId(int userId,int productId){
+
+        return shoppingCartRepository.findByUserIdAndProductId(userId,productId);
+   }
+
+   public void deleteByUserId(int userId){
+        shoppingCartRepository.deleteByUserId(userId);
+   }
+
 }
