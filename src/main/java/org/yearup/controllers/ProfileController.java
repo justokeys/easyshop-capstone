@@ -38,7 +38,7 @@ public class ProfileController {
 
     }
 
-    @PutMapping("{id}")
+    @PutMapping("")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<Profile> updateProfileById(Principal principal){
         String userName = principal.getName();

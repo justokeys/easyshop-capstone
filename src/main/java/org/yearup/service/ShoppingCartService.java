@@ -72,8 +72,9 @@ public class ShoppingCartService {
     }
 
     @Transactional
-    public void deleteById(int userId) {
+    public ShoppingCart deleteById(int userId) {
         shoppingCartRepository.deleteByUserId(userId);
+        return getByUserId(userId);
     }
 
 

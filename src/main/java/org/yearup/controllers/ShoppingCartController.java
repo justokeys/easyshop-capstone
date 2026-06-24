@@ -17,7 +17,7 @@ import java.security.Principal;
 
 // convert this class to a REST controller
 @RestController
-@RequestMapping("/shoppingcart")
+@RequestMapping("/cart")
 @CrossOrigin(origins = "*")
 // only logged in users should have access to these actions
 @PreAuthorize("isAuthenticated()")
@@ -99,7 +99,7 @@ public class ShoppingCartController
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart  - return the (now empty) cart so the front end can refresh it (200 OK)
-    @DeleteMapping("/delete")
+    @DeleteMapping("")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ShoppingCart> deleteProduct(Principal principal){
         String userName = principal.getName();
@@ -107,8 +107,8 @@ public class ShoppingCartController
         User user = userService.getByUserName(userName);
         int userId = user.getId();
 
-        shoppingCartService.deleteById(userId);
-        return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(shoppingCartService.deleteById(userId));
 
 
     }

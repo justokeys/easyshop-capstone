@@ -45,7 +45,7 @@ public class CategoriesController
     }
 
     // add the appropriate annotation for a get action
-    @GetMapping("/search/id/{categoryId}")
+    @GetMapping("/{categoryId}")
     public ResponseEntity<Category> getById(@PathVariable int categoryId)
     {
         // get the category by id
@@ -54,7 +54,7 @@ public class CategoriesController
 
     // the url to return all products in category 1 would look like this
     // https://localhost:8080/categories/1/products
-    @GetMapping("/products/{categoryId}")
+    @GetMapping("/{categoryId}/products")
     public ResponseEntity<List<Product>> getProductsById(@PathVariable int categoryId)
     {
         List<Product> productList = productService.listByCategoryId(categoryId);
@@ -64,7 +64,7 @@ public class CategoriesController
 
     // add annotation to call this method for a POST action
     // add annotation to ensure that only an ADMIN can call this function
-    @PostMapping("/add/category/{category}")
+    @PostMapping("")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Category> addCategory(@RequestBody Category category)
     {
@@ -75,7 +75,7 @@ public class CategoriesController
     }
 
     // add annotation to call this method for a PUT (update) action - the url path must include the categoryId
-    @PutMapping
+    @PutMapping("/{categoryId}")
     // add annotation to ensure that only an ADMIN can call this function
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Category> updateCategory(@PathVariable int categoryId, @RequestBody Category category) {
@@ -93,7 +93,7 @@ public class CategoriesController
 
     // add annotation to call this method for a DELETE action - the url path must include the categoryId
     // add annotation to ensure that only an ADMIN can call this function
-    @DeleteMapping
+    @DeleteMapping("/{categoryId}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCategory(@PathVariable int categoryId)
     {
