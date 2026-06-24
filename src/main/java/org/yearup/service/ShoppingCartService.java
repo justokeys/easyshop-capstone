@@ -1,5 +1,6 @@
 package org.yearup.service;
 
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.yearup.models.*;
 import org.yearup.repository.ShoppingCartRepository;
@@ -30,7 +31,6 @@ public class ShoppingCartService
 
         // find each product and add them to row in cart
         // find the quantity of each item and add them to row in cart
-
         for (CartItem cartItem : userCartItems){
             Product products = productService.getById(cartItem.getProductId());
             ShoppingCartItem item = new ShoppingCartItem();
@@ -46,7 +46,6 @@ public class ShoppingCartService
 
     public ShoppingCart addProductByUserIdAndProductId(int userId,int productId){
         CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
-
 
 
        if (cartItem == null) {
@@ -72,20 +71,14 @@ public class ShoppingCartService
            return getByUserId(userId);
    }
 
+   public void deleteById(int userId){
+        shoppingCartRepository.deleteByUserId(userId);
+   }
 
 
     public CartItem getByByUserIdAndProductId(int userId,int productId){
 
         return shoppingCartRepository.findByUserIdAndProductId(userId,productId);
     }
-
-
-
-
-
-
-   public void deleteByUserId(int userId){
-        shoppingCartRepository.deleteByUserId(userId);
-   }
 
 }

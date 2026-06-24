@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.CartItem;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
@@ -98,5 +99,19 @@ public class ShoppingCartController
 
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart  - return the (now empty) cart so the front end can refresh it (200 OK)
+    @DeleteMapping("/products/{productId}")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<ShoppingCart> deleteProduct(Principal principal,@PathVariable int productId){
+        String userName = principal.getName();
+        // find database user by username
+        User user = userService.getByUserName(userName);
+        int userId = user.getId();
+
+        shoppingCartService.deleteById(userId);
+        return ResponseEntity.noContent().build();
+
+
+    }
+
 
 }
