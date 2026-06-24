@@ -69,7 +69,6 @@ public class ShoppingCartService {
         shoppingCartRepository.save(cartItem);
 
         return getByUserId(userId);
-
     }
 
     @Transactional
