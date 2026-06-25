@@ -24,8 +24,8 @@ public class ProductService
                 : productRepository.findAll();
 
         return products.stream()
-                        .filter(p -> minPrice == null || p.getPrice() <= minPrice)
-                       .filter(p -> maxPrice == null || p.getPrice() >= maxPrice)
+                        .filter(p -> minPrice == null || p.getPrice() >= minPrice)
+                       .filter(p -> maxPrice == null || p.getPrice() <= maxPrice)
                        .filter(p -> subCategory == null || subCategory.equalsIgnoreCase(p.getSubCategory()))
                        .filter(p -> isFeatured == null || p.isFeatured() )
                        .toList();

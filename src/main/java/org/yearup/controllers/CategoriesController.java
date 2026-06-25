@@ -97,9 +97,9 @@ public class CategoriesController
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteCategory(@PathVariable int categoryId)
     {
-        if (categoryService.getById(categoryId) == null){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+//        if (categoryService.getById(categoryId) == null){
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//        }
         // delete the category by id and return status 204 No Content;
         categoryService.delete(categoryId);
 

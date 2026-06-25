@@ -55,7 +55,7 @@ public class ProductsController
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Product> updateProduct(@PathVariable int id, @RequestBody Product product) {
         Product update = productService.update(id, product);
