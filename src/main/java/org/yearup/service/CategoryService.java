@@ -8,17 +8,14 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CategoryService
-{
+public class CategoryService {
     private final CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepository categoryRepository)
-    {
+    public CategoryService(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    public List<Category> getAllCategories()
-    {
+    public List<Category> getAllCategories() {
         // get all categories
         return categoryRepository.findAll();
     }
@@ -28,24 +25,21 @@ public class CategoryService
         return categoryRepository.findById(categoryId);
     }
 
-    public Category create(Category category)
-    {
+    public Category create(Category category) {
 
         // create a new category
         return categoryRepository.save(category);
     }
 
-    public Category updateCategory(int categoryId, Category category)
-    {
+    public Category updateCategory(int categoryId, Category category) {
         Category existing = categoryRepository.findById(categoryId).orElseThrow();
         existing.setDescription(category.getDescription());
         existing.setName(category.getName());
         // update category and return the updated category
-        return categoryRepository.save(existing) ;
+        return categoryRepository.save(existing);
     }
 
-    public void delete(int categoryId)
-    {
+    public void delete(int categoryId) {
         // delete category
         Category deleted = categoryRepository.findById(categoryId).orElseThrow();
         categoryRepository.delete(deleted);

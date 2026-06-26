@@ -4,11 +4,8 @@ import org.springframework.stereotype.Service;
 import org.yearup.models.*;
 import org.yearup.repository.OrderLineItemRepository;
 import org.yearup.repository.OrderRepository;
-import org.yearup.repository.ShoppingCartRepository;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Locale;
 
 @Service
 public class OrderService {
@@ -40,7 +37,7 @@ public class OrderService {
         int newOrderId = newOrder.getOrderId();
 
 
-        for(ShoppingCartItem item : theCart.getItems().values()){
+        for (ShoppingCartItem item : theCart.getItems().values()) {
             OrderLineItem lineItem = new OrderLineItem();
             lineItem.setProductId(item.getProductId());
             lineItem.setSalesPrice(item.getProduct().getPrice());

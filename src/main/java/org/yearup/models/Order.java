@@ -3,6 +3,7 @@ package org.yearup.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+
 // order class for checkout
 @Entity
 @Table(name = "orders")

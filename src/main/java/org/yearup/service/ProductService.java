@@ -51,6 +51,7 @@ public class ProductService {
         existing.setStock(product.getStock());
         existing.setFeatured(product.isFeatured());
         existing.setImageUrl(product.getImageUrl());
+        // fix bug 2 add product save
         return productRepository.save(existing);
     }
 
