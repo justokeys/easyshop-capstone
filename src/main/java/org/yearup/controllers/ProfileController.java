@@ -3,7 +3,6 @@ package org.yearup.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 import org.yearup.models.Profile;
 import org.yearup.models.User;
@@ -26,26 +25,30 @@ public class ProfileController {
         this.userService = userService;
     }
 
+    // Get user profile by id
     @GetMapping("")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Profile> getProfileById(Principal principal){
+    public ResponseEntity<Profile> getProfileById(Principal principal) {
         String userName = principal.getName();
         // find database user by username
         User user = userService.getByUserName(userName);
         int userId = user.getId();
 
+        // use orElseGet to return not found http code if user id is not found
+        // avoids throwing an exception in this case
         return profileService.getProfile(userId).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
 
+    //update profile info
     @PutMapping("")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Profile> updateProfileById(Principal principal, @RequestBody Profile profile){
+    public ResponseEntity<Profile> updateProfileById(Principal principal, @RequestBody Profile profile) {
         String userName = principal.getName();
         // find database user by username
         User user = userService.getByUserName(userName);
         int userId = user.getId();
-        return ResponseEntity.ok().body(profileService.updateProfileById(userId,profile));
+        return ResponseEntity.ok().body(profileService.updateProfileById(userId, profile));
 
 
     }

@@ -1,7 +1,7 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
-
+// order item class used to retrieve items from shoppingCartItem
 @Entity
 @Table(name = "order_line_items")
 public class OrderLineItem {

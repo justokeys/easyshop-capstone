@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.CartItem;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.ShoppingCartItem;
@@ -21,8 +20,7 @@ import java.security.Principal;
 @CrossOrigin(origins = "*")
 // only logged in users should have access to these actions
 @PreAuthorize("isAuthenticated()")
-public class ShoppingCartController
-{
+public class ShoppingCartController {
     // a shopping cart controller depends on the service layer
     @Autowired
     private ShoppingCartService shoppingCartService;
@@ -33,8 +31,7 @@ public class ShoppingCartController
     // each method in this controller requires a Principal object as a parameter
     @GetMapping("")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ShoppingCart> getCart(Principal principal)
-    {
+    public ResponseEntity<ShoppingCart> getCart(Principal principal) {
         // get the currently logged in username
         String userName = principal.getName();
         // find database user by username
@@ -42,14 +39,13 @@ public class ShoppingCartController
         int userId = user.getId();
 
         // use the shoppingCartService to get all items in the cart and return the cart
-        return ResponseEntity.ok().body(shoppingCartService.getByUserId(userId)) ;
+        return ResponseEntity.ok().body(shoppingCartService.getByUserId(userId));
     }
 
 
     @GetMapping("userId/productid/{productId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<CartItem> getCart(Principal principal, int productId)
-    {
+    public ResponseEntity<CartItem> getCart(Principal principal, int productId) {
         // get the currently logged in username
         String userName = principal.getName();
         // find database user by username
@@ -57,7 +53,7 @@ public class ShoppingCartController
         int userId = user.getId();
 
         // use the shoppingCartService to get all items in the cart and return the cart
-        return ResponseEntity.ok().body(shoppingCartService.getByByUserIdAndProductId(userId,productId));
+        return ResponseEntity.ok().body(shoppingCartService.getByByUserIdAndProductId(userId, productId));
     }
 
 
@@ -67,15 +63,15 @@ public class ShoppingCartController
 
     @PostMapping("/products/{productId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ShoppingCart>  addProductById(Principal principal,@PathVariable int productId){
+    public ResponseEntity<ShoppingCart> addProductById(Principal principal, @PathVariable int productId) {
         // get the currently logged in username
-                String userName = principal.getName();
-                // find database user by username
-                User user = userService.getByUserName(userName);
-                int userId = user.getId();
+        String userName = principal.getName();
+        // find database user by username
+        User user = userService.getByUserName(userName);
+        int userId = user.getId();
 
-                return ResponseEntity.status(HttpStatus.CREATED)
-                        .body(shoppingCartService.addProductByUserIdAndProductId(userId,productId));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(shoppingCartService.addProductByUserIdAndProductId(userId, productId));
     }
 
 
@@ -84,7 +80,7 @@ public class ShoppingCartController
     // the BODY should be a ShoppingCartItem - quantity is the only value that will be updated; return the cart (200 OK)
     @PutMapping("/products/{productId}")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ShoppingCart> updateProductByProductId(Principal principal , @RequestBody ShoppingCartItem item, @PathVariable int productId){
+    public ResponseEntity<ShoppingCart> updateProductByProductId(Principal principal, @RequestBody ShoppingCartItem item, @PathVariable int productId) {
         String userName = principal.getName();
         // find database user by username
         User user = userService.getByUserName(userName);
@@ -92,7 +88,7 @@ public class ShoppingCartController
 
         int quantityUpdate = item.getQuantity();
 
-        return ResponseEntity.ok().body(shoppingCartService.updateProductByIdAndUserId(userId,productId, quantityUpdate));
+        return ResponseEntity.ok().body(shoppingCartService.updateProductByIdAndUserId(userId, productId, quantityUpdate));
 
     }
 
@@ -101,7 +97,7 @@ public class ShoppingCartController
     // https://localhost:8080/cart  - return the (now empty) cart so the front end can refresh it (200 OK)
     @DeleteMapping("")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<ShoppingCart> deleteProduct(Principal principal){
+    public ResponseEntity<ShoppingCart> deleteProduct(Principal principal) {
         String userName = principal.getName();
         // find database user by username
         User user = userService.getByUserName(userName);
