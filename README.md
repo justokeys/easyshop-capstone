@@ -3,7 +3,7 @@
 EasyShop is a REST API for an online store, built with **Spring Boot** and backed by a **MySQL** database. It powers a clothing-store web front-end (provided) and handles everything from browsing the catalog to logging in, managing a shopping cart, and checking out. The project is the e-commerce capstone for the Year Up application-development track.
 
 This repository delivers **Version 2** of the API: it adds category management and product CRUD, fixes two reported bugs, and implements the shopping cart, user profile, and checkout features on top of the starter code.
-
+![Screenshot 2026-06-26 002606.png](../../../Pictures/Screenshots/Screenshot%202026-06-26%20002606.png)
 **Features**
 
 - **Browse the catalog** — list all categories, list products in a category, and view a single product.

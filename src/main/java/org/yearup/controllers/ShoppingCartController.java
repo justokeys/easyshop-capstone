@@ -69,7 +69,7 @@ public class ShoppingCartController {
         // find database user by username
         User user = userService.getByUserName(userName);
         int userId = user.getId();
-
+        // use the shoppingCartService add products to the cart and return the cart
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(shoppingCartService.addProductByUserIdAndProductId(userId, productId));
     }
@@ -87,7 +87,7 @@ public class ShoppingCartController {
         int userId = user.getId();
 
         int quantityUpdate = item.getQuantity();
-
+        // use the shoppingCartService add products to the cart and return the cart
         return ResponseEntity.ok().body(shoppingCartService.updateProductByIdAndUserId(userId, productId, quantityUpdate));
 
     }
