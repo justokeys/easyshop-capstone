@@ -14,22 +14,19 @@ import java.util.Locale;
 public class OrderService {
     private OrderLineItemRepository orderLineItemRepository;
     private OrderRepository orderRepository;
-    private ShoppingCartRepository shoppingCartRepository;
     private ShoppingCartService shoppingCartService;
-    private ProductService productService;
     private ProfileService profileService;
 
-    public OrderService(OrderLineItemRepository orderLineItemRepository, OrderRepository orderRepository, ShoppingCartRepository shoppingCartRepository, ShoppingCartService shoppingCartService, ProductService productService, ProfileService profileService) {
+    public OrderService(OrderLineItemRepository orderLineItemRepository, OrderRepository orderRepository, ShoppingCartService shoppingCartService, ProfileService profileService) {
         this.orderLineItemRepository = orderLineItemRepository;
         this.orderRepository = orderRepository;
-        this.shoppingCartRepository = shoppingCartRepository;
         this.shoppingCartService = shoppingCartService;
-        this.productService = productService;
         this.profileService = profileService;
     }
 
     public Order getByUserId(int userId) {
         Profile userProfile = profileService.getProfile(userId).orElseThrow();
+        ShoppingCart theCart = shoppingCartService.getByUserId(userId);
         Order newOrder = new Order();
         newOrder.setUserId(userId);
         newOrder.setZip(userProfile.getZip());
@@ -42,21 +39,19 @@ public class OrderService {
 
         int newOrderId = newOrder.getOrderId();
 
-        List<CartItem> cartItems = shoppingCartRepository.findByUserId(userId);
 
-
-        for (CartItem itemList : cartItems) {
-            Product products = productService.getById(itemList.getProductId());
+        for(ShoppingCartItem item : theCart.getItems().values()){
             OrderLineItem lineItem = new OrderLineItem();
-            lineItem.setProductId(itemList.getProductId());
-            lineItem.setSalesPrice(products.getPrice());
-            lineItem.setQuantity(itemList.getQuantity());
+            lineItem.setProductId(item.getProductId());
+            lineItem.setSalesPrice(item.getProduct().getPrice());
+            lineItem.setQuantity(item.getQuantity());
+            lineItem.setDiscount(item.getDiscountPercent());
             lineItem.setOrderId(newOrderId);
 
             orderLineItemRepository.save(lineItem);
-
-
         }
+
+        shoppingCartService.deleteById(userId);
 
         return newOrder;
     }

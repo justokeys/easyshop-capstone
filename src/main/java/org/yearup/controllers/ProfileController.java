@@ -40,12 +40,11 @@ public class ProfileController {
 
     @PutMapping("")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<Profile> updateProfileById(Principal principal){
+    public ResponseEntity<Profile> updateProfileById(Principal principal, @RequestBody Profile profile){
         String userName = principal.getName();
         // find database user by username
         User user = userService.getByUserName(userName);
         int userId = user.getId();
-        Profile profile = profileService.getProfile(userId).orElseThrow();
         return ResponseEntity.ok().body(profileService.updateProfileById(userId,profile));
 
 
